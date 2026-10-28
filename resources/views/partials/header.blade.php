@@ -23,6 +23,16 @@
                     <li class="nav__item">
                         <span class="nav__link">Контакты</span>
                     </li>
+                    @auth
+                        @if(auth()->user()->role === 'admin')
+                            <li class="nav__item">
+                                <a class="nav__link {{ request()->routeIs('admin.*') ? 'nav__link--active' : '' }}"
+                                href="{{ route('admin.index') }}">
+                                    Админка
+                                </a>
+                            </li>
+                        @endif
+                    @endauth
                 </ul>
             </nav>
 

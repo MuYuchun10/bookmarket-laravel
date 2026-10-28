@@ -12,6 +12,7 @@
 
     <link href="{{ asset('css/normalize.css') }}" rel="stylesheet">
     <link href="{{ asset('css/style.css') }}" rel="stylesheet">
+    @stack('styles')
 </head>
 <body class="page">
     @include('partials.header')
