@@ -1,5 +1,7 @@
 
-<article class="product-card">
+<article class="product-card"
+         data-category="{{ $book->category?->name ?? 'Книги' }}"
+         data-description="{{ $book->description }}">
     <a class="product-card__image"
        href="{{ route('catalog.show', $book->slug) }}">
         @if($book->image)
@@ -38,8 +40,8 @@
                 Добавить в корзину
             </button>
 
-            <button class="product-card__quick-btn"
-                    type="button" disabled>
+            <button class="product-card__quick-btn open-modal"
+                    type="button">
                 Быстрый просмотр
             </button>
         </div>

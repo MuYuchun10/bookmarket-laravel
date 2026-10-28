@@ -12,6 +12,7 @@ class HomeController extends Controller
         $categories = Category::all();
 
         $featuredProducts = Product::active()
+            ->with('category')
             ->orderByDesc('is_hit')
             ->orderByDesc('is_new')
             ->orderByDesc('created_at')

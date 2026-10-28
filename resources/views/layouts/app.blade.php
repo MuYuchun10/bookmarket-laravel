@@ -22,6 +22,47 @@
 
     @include('partials.footer')
 
+    
+    <div class="modal" id="quickViewModal" aria-hidden="true">
+        <div class="modal__content"
+            role="dialog"
+            aria-modal="true"
+            aria-labelledby="quickViewTitle">
+
+            <button class="modal__close"
+                    type="button" aria-label="Закрыть">×</button>
+
+            <h2 class="modal__title" id="quickViewTitle">
+                Быстрый просмотр
+            </h2>
+
+            <div class="modal__body">
+                <article class="quick-view">
+                    <div class="quick-view__cover">
+                        <img class="cover-media" alt="">
+                        <span>Обложка отсутствует</span>
+                    </div>
+
+                    <div class="quick-view__content">
+                        <span class="quick-view__category"></span>
+                        <h3 class="quick-view__title"></h3>
+                        <p class="quick-view__author"></p>
+                        <p class="quick-view__price"></p>
+                        <p class="quick-view__status"></p>
+                        <p class="quick-view__description"></p>
+
+                        <a class="btn btn--accent quick-view__button">
+                            Подробнее
+                        </a>
+                    </div>
+                </article>
+            </div>
+        </div>
+    </div>
+
+    <script src="{{ asset('js/quick-view.js') }}" defer></script>
+
+
     @stack('scripts')
 </body>
 </html>
