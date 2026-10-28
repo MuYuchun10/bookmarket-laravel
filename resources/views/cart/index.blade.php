@@ -46,15 +46,36 @@
                         </div>
 
                         <div class="cart-item__counter">
-                            <span class="cart-item__counter-value">
-                                {{ $quantity }} шт.
-                            </span>
+                            <form action="{{ route('cart.update', $book->id) }}" method="POST">
+                                @csrf
+                                @method('PATCH')
+                                <input type="hidden" name="change" value="-1">
+                                <button type="submit" class="cart-item__counter-btn">−</button>
+                            </form>
+
+                            <span class="cart-item__counter-value">{{ $quantity }}</span>
+
+                            <form action="{{ route('cart.update', $book->id) }}" method="POST">
+                                @csrf
+                                @method('PATCH')
+                                <input type="hidden" name="change" value="1">
+                                <button type="submit" class="cart-item__counter-btn"
+                                        @disabled($quantity >= $book->quantity)>+</button>
+                            </form>
                         </div>
 
                         <div class="cart-item__summary">
                             <p class="cart-item__price">
                                 {{ number_format((float) $book->price * $quantity, 0, '', ' ') }} ₽
                             </p>
+                            <form action="{{ route('cart.remove', $book->id) }}" method="POST">
+                                @csrf
+                                @method('DELETE')
+
+                                <button class="cart-item__remove" type="submit">
+                                    Удалить
+                                </button>
+                            </form>
                         </div>
                     </article>
                 @empty

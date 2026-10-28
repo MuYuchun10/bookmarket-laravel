@@ -14,3 +14,7 @@ Route::get('/catalog/{slug}', [ProductController::class, 'show'])->name('catalog
 Route::post('/cart/add/{product}', [CartController::class, 'add'])->name('cart.add');
 
 Route::get('/cart', [CartController::class, 'index'])->name('cart.index');
+
+Route::patch('/cart/{product}', [CartController::class, 'update'])->name('cart.update');
+
+Route::delete('/cart/{product}', [CartController::class, 'remove'])->name('cart.remove');

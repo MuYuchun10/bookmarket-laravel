@@ -10,7 +10,18 @@ class UserSeeder extends Seeder
 {
     public function run(): void
     {
-        // Учетная запись администратора из старого дампа
+        // 10 тестовых пользователей
+        for ($i = 1; $i <= 10; $i++) {
+            $email = "demo{$i}@example.test";
+
+            if (!User::where('email', $email)->exists()) {
+                User::factory()->create([
+                    'email' => $email,
+                ]);
+            }
+        }
+
+        // Учетная запись администратора
         $admin = User::updateOrCreate(
             ['email' => 'admin@admin.com'],
             [
@@ -24,20 +35,5 @@ class UserSeeder extends Seeder
         );
         $admin->role = 'admin';
         $admin->save();
-
-        // Тестовый обычный покупатель
-        $user = User::updateOrCreate(
-            ['email' => 'user@user.com'],
-            [
-                'name' => 'Иван Иванов',
-                'password' => Hash::make('password'),
-                'phone' => '+7 999 111-22-33',
-                'city' => 'Москва',
-                'address' => 'ул. Тверская, 10',
-                'postcode' => '101000',
-            ]
-        );
-        $user->role = 'user';
-        $user->save();
     }
 }

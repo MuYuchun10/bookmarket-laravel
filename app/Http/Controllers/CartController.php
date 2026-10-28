@@ -54,4 +54,44 @@ class CartController extends Controller
 
         return back()->with('cart_success', 'Книга добавлена в корзину');
     }
+
+    
+    public function update(Request $request, Product $product)
+    {
+        $request->validate([
+            'change' => 'required|integer|in:-1,1',
+        ]);
+
+        $cart = $request->session()->get('cart', []);
+
+        if (!isset($cart[$product->id])) {
+            return redirect()->route('cart.index');
+        }
+
+        $quantity = $cart[$product->id] + (int) $request->change;
+
+        if ($quantity <= 0) {
+            unset($cart[$product->id]);
+        } elseif (!$product->status || $quantity > $product->quantity) {
+            return back()->with('cart_error', 'Недостаточно книг на складе');
+        } else {
+            $cart[$product->id] = $quantity;
+        }
+
+        $request->session()->put('cart', $cart);
+
+        return redirect()->route('cart.index');
+    }
+
+    public function remove(Request $request, Product $product)
+    {
+        $cart = $request->session()->get('cart', []);
+
+        unset($cart[$product->id]);
+
+        $request->session()->put('cart', $cart);
+
+        return redirect()->route('cart.index');
+    }
+
 }
