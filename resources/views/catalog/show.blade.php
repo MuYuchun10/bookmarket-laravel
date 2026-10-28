@@ -110,10 +110,16 @@
                         </button>
                     </form>
 
-                    <button class="btn btn--secondary"
-                            type="button" disabled>
-                        Купить сейчас
-                    </button>
+                    <form action="{{ route('checkout.buy-now', $product->id) }}"
+                        method="POST">
+                        @csrf
+
+                        <button class="btn btn--secondary"
+                                type="submit"
+                                @disabled(!$available)>
+                            Купить сейчас
+                        </button>
+                    </form>
                 </div>
 
                 <!-- Характеристики -->

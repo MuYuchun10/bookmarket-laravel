@@ -8,7 +8,9 @@
         <p class="checkout-page__eyebrow">Заказ</p>
 
         <h1 class="checkout-page__title">
-            Заполните данные для доставки
+            {{ $buyNow
+                ? 'Оформление выбранной книги'
+                : 'Заполните данные для доставки' }}
         </h1>
 
         <div class="checkout-layout">
@@ -18,6 +20,8 @@
                       action="{{ route('checkout.store') }}"
                       method="POST">
                     @csrf
+                    <input type="hidden" name="mode"
+                        value="{{ $buyNow ? 'buy-now' : 'cart' }}">
 
                     @if($errors->has('cart'))
                         <p class="error-message checkout-form__group--full">

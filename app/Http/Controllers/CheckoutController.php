@@ -13,7 +13,12 @@ class CheckoutController extends Controller
 {
     public function index(Request $request)
     {
-        $cart = $request->session()->get('cart', []);
+        $buyNow = $request->query('mode') === 'buy-now';
+
+        $cart = $request->session()->get(
+            $buyNow ? 'buy_now' : 'cart',
+            []
+        );
 
         if (!$cart) {
             return redirect()->route('cart.index');
@@ -54,7 +59,7 @@ class CheckoutController extends Controller
         $total = $subtotal - $discount;
 
         return view('checkout.index',
-            compact('items', 'subtotal', 'discount', 'total'));
+            compact('items', 'subtotal', 'discount', 'total', 'buyNow'));
     }
 
     public function store(Request $request)
@@ -67,6 +72,7 @@ class CheckoutController extends Controller
             'house' => 'required|string|max:50',
             'flat' => 'nullable|string|max:50',
             'comment' => 'nullable|string|max:2000',
+            'mode' => 'required|in:cart,buy-now',
         ]);
 
         if (strlen(preg_replace('/\D/', '', $data['phone'])) < 10) {
@@ -75,7 +81,11 @@ class CheckoutController extends Controller
             ]);
         }
 
-        $cart = $request->session()->get('cart', []);
+        $sessionKey = $data['mode'] === 'buy-now'
+            ? 'buy_now'
+            : 'cart';
+
+        $cart = $request->session()->get($sessionKey, []);
 
         if (!$cart) {
             return redirect()->route('cart.index');
@@ -162,9 +172,29 @@ class CheckoutController extends Controller
             ]);
         });
 
-        $request->session()->forget('cart');
+        $request->session()->forget($sessionKey);
 
         return redirect()->route('profile.index')
             ->with('success', 'Заказ успешно оформлен!');
     }
+
+    
+    public function buyNow(Request $request, Product $product)
+    {
+        if (!$product->status || $product->quantity < 1) {
+            return back()->with(
+                'cart_error',
+                'Книга отсутствует в наличии'
+            );
+        }
+
+        $request->session()->put('buy_now', [
+            $product->id => 1,
+        ]);
+
+        return redirect()->route('checkout.index', [
+            'mode' => 'buy-now',
+        ]);
+    }
+
 }

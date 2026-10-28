@@ -71,3 +71,6 @@ Route::prefix('admin')
         Route::post('/products', [AdminProductController::class, 'store'])
             ->name('products.store');
     });
+
+Route::post('/buy-now/{product}', [CheckoutController::class, 'buyNow'])
+    ->name('checkout.buy-now');
