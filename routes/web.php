@@ -67,4 +67,7 @@ Route::prefix('admin')
 
         Route::get('/products', [AdminProductController::class, 'index'])
             ->name('products.index');
+
+        Route::post('/products', [AdminProductController::class, 'store'])
+            ->name('products.store');
     });
