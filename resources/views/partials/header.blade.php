@@ -34,9 +34,10 @@
                     <span class="user-nav__link">Войти</span>
                 @endauth
 
-                <span class="user-nav__link user-nav__link--accent">
-                    Корзина (<span class="cart-count">0</span>)
-                </span>
+                <a class="user-nav__link user-nav__link--accent"
+                    href="{{ route('cart.index') }}">
+                    Корзина (<span class="cart-count">{{ array_sum(session('cart', [])) }}</span>)
+                </a>
             </div>
         </div>
     </div>

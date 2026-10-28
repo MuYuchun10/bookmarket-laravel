@@ -99,10 +99,16 @@
 
                 <!-- Корзину подключим позже -->
                 <div class="book-card__actions">
-                    <button class="btn btn--primary"
-                            type="button" disabled>
-                        Добавить в корзину
-                    </button>
+                    <form action="{{ route('cart.add', $product->id) }}"
+                        method="POST">
+                        @csrf
+
+                        <button class="btn btn--primary"
+                                type="submit"
+                                @disabled(!$available)>
+                            Добавить в корзину
+                        </button>
+                    </form>
 
                     <button class="btn btn--secondary"
                             type="button" disabled>

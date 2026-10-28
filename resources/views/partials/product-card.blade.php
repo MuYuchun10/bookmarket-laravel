@@ -35,10 +35,16 @@
         </div>
 
         <div class="product-card__actions">
-            <button class="product-card__btn"
-                    type="button" disabled>
-                Добавить в корзину
-            </button>
+            <form action="{{ route('cart.add', $book->id) }}"
+                method="POST">
+                @csrf
+
+                <button class="product-card__btn"
+                        type="submit"
+                        @disabled(!$book->status || $book->quantity < 1)>
+                    Добавить в корзину
+                </button>
+            </form>
 
             <button class="product-card__quick-btn open-modal"
                     type="button">
