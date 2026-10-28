@@ -29,7 +29,7 @@ class AuthController extends Controller
 
         $request->session()->regenerate();
 
-        return redirect()->route('profile.index');
+        return redirect()->intended(route('profile.index'));
     }
 
     public function register(Request $request)

@@ -6,6 +6,7 @@ use App\Http\Controllers\HomeController;
 use App\Http\Controllers\CartController;
 use App\Http\Controllers\AuthController;
 use App\Http\Controllers\ProfileController;
+use App\Http\Controllers\CheckoutController;
 
 Route::get('/', [HomeController::class, 'index'])->name('home');
 
@@ -38,11 +39,19 @@ Route::post('/logout', [AuthController::class, 'logout'])
     ->middleware('auth')
     ->name('logout');
 
-    
+
 Route::middleware('auth')->group(function () {
     Route::get('/profile', [ProfileController::class, 'index'])
         ->name('profile.index');
 
     Route::patch('/profile', [ProfileController::class, 'update'])
         ->name('profile.update');
+});
+
+Route::middleware('auth')->group(function () {
+    Route::get('/checkout', [CheckoutController::class, 'index'])
+        ->name('checkout.index');
+
+    Route::post('/checkout', [CheckoutController::class, 'store'])
+        ->name('checkout.store');
 });

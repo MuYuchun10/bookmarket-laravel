@@ -10,6 +10,11 @@
         <h1 class="cart-page__title">
             Проверьте выбранные книги перед оформлением заказа
         </h1>
+        @if(session('cart_error'))
+            <p class="error-message">
+                {{ session('cart_error') }}
+            </p>
+        @endif
 
         <div class="cart-layout">
             <section class="cart-items">
@@ -116,10 +121,17 @@
                     </span>
                 </div>
 
-                <button class="btn btn--accent cart-total__button"
-                        type="button" disabled>
-                    Перейти к оформлению
-                </button>
+                @if($items->isNotEmpty())
+                    <a class="btn btn--accent cart-total__button"
+                    href="{{ route('checkout.index') }}">
+                        Перейти к оформлению
+                    </a>
+                @else
+                    <button class="btn btn--accent cart-total__button"
+                            type="button" disabled>
+                        Перейти к оформлению
+                    </button>
+                @endif
             </aside>
         </div>
     </div>
