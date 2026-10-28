@@ -1,4 +1,3 @@
-
 <header class="header">
     <div class="container">
         <div class="header__container">
@@ -29,9 +28,23 @@
 
             <div class="user-nav">
                 @auth
-                    <span class="user-nav__link">{{ auth()->user()->name }}</span>
+                    <span class="user-nav__link">
+                        {{ auth()->user()->name }}
+                    </span>
+
+                    <form action="{{ route('logout') }}" method="POST">
+                        @csrf
+
+                        <button class="user-nav__link"
+                                type="submit"
+                                style="font-family: inherit; cursor: pointer;">
+                            Выйти
+                        </button>
+                    </form>
                 @else
-                    <span class="user-nav__link">Войти</span>
+                    <a class="user-nav__link" href="{{ route('login') }}">
+                        Войти
+                    </a>
                 @endauth
 
                 <a class="user-nav__link user-nav__link--accent"
