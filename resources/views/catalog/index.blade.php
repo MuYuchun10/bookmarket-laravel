@@ -19,6 +19,8 @@
                     <form action="{{ route('catalog.index') }}"
                           class="catalog-filter-form" method="GET">
 
+                        <input type="hidden" name="sort" value="{{ request('sort', 'price-asc') }}">
+                        
                         <div class="catalog-filter__group">
                             <label class="catalog-filter__label" for="search">
                                 Название книги
@@ -50,20 +52,23 @@
                                 Автор
                             </label>
                             <input class="catalog-filter__input"
-                                   id="author" name="author"
-                                   placeholder="Введите автора"
-                                   value="{{ request('author') }}" disabled>
+                                id="author" name="author"
+                                placeholder="Введите автора"
+                                value="{{ request('author') }}">
                         </div>
 
                         <div class="catalog-filter__group">
                             <span class="catalog-filter__label">Цена</span>
                             <div class="catalog-filter__price">
                                 <input class="catalog-filter__input"
-                                       type="number" name="price-from"
-                                       placeholder="от 300" min="0" disabled>
+                                    type="number" name="price-from"
+                                    placeholder="от 300" min="0"
+                                    value="{{ request('price-from') }}">
+
                                 <input class="catalog-filter__input"
-                                       type="number" name="price-to"
-                                       placeholder="до 1500" min="0" disabled>
+                                    type="number" name="price-to"
+                                    placeholder="до 1500" min="0"
+                                    value="{{ request('price-to') }}">
                             </div>
                         </div>
 
@@ -93,12 +98,15 @@
                     </div>
 
                     <div class="catalog-toolbar__actions">
-                        <button class="sort-btn" type="button" disabled>
+                        <a href="{{ route('catalog.index', array_merge(request()->except(['sort', 'page']), ['sort' => 'price-asc'])) }}"
+                        class="sort-btn {{ request('sort', 'price-asc') === 'price-asc' ? 'sort-btn--active' : '' }}">
                             Сначала дешевле
-                        </button>
-                        <button class="sort-btn" type="button" disabled>
+                        </a>
+
+                        <a href="{{ route('catalog.index', array_merge(request()->except(['sort', 'page']), ['sort' => 'price-desc'])) }}"
+                        class="sort-btn {{ request('sort') === 'price-desc' ? 'sort-btn--active' : '' }}">
                             Сначала дороже
-                        </button>
+                        </a>
                     </div>
                 </div>
 

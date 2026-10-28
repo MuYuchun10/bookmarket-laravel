@@ -11,33 +11,62 @@ class ProductController extends Controller
     /**
      * Список товаров (каталог) с фильтрацией по категории и поиском.
      */
+    
     public function index(Request $request)
     {
+        $request->validate([
+            'search' => 'nullable|string|max:255',
+            'category' => 'nullable|string|max:100',
+            'author' => 'nullable|string|max:150',
+            'price-from' => 'nullable|numeric|min:0',
+            'price-to' => 'nullable|numeric|min:0',
+        ]);
+
         $categories = Category::all();
+        $query = Product::active()->with('category');
 
-        $query = Product::with('category')->active();
+        // Название книги
+        if ($request->filled('search')) {
+            $query->where('name', 'like', '%' . $request->input('search') . '%');
+        }
 
-        // Фильтрация по слагу категории, если передан параметр ?category=...
+        // Категория
         if ($request->filled('category')) {
             $query->whereHas('category', function ($q) use ($request) {
-                $q->where('slug', $request->query('category'));
+                $q->where('slug', $request->input('category'));
             });
         }
 
-        // Поиск по названию или автору
-        if ($request->filled('search')) {
-            $search = $request->query('search');
-            $query->where(function ($q) use ($search) {
-                $q->where('name', 'like', "%{$search}%")
-                  ->orWhere('author', 'like', "%{$search}%");
-            });
+        // Автор
+        if ($request->filled('author')) {
+            $query->where('author', 'like', '%' . $request->input('author') . '%');
         }
 
-        // Пагинация по 9 книг на страницу с сохранением query-параметров в URL
-        $products = $query->latest()->paginate(9)->withQueryString();
+        // Минимальная цена
+        if ($request->filled('price-from')) {
+            $query->where('price', '>=', $request->input('price-from'));
+        }
+
+        // Максимальная цена
+        if ($request->filled('price-to')) {
+            $query->where('price', '<=', $request->input('price-to'));
+        }
+
+        $sort = $request->input('sort', 'price-asc');
+
+        if ($sort === 'price-desc') {
+            $query->orderByDesc('price');
+        } else {
+            $query->orderBy('price');
+        }
+
+        $products = $query->orderBy('id')
+            ->paginate(9)
+            ->withQueryString();
 
         return view('catalog.index', compact('products', 'categories'));
     }
+
 
     /**
      * Детальная страница отдельной книги.
