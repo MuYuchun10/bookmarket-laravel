@@ -19,7 +19,9 @@
                         <a class="footer__link" href="{{ route('catalog.index') }}">Каталог</a>
                     </li>
                     <li class="footer__item">
-                        <span class="footer__link">Контакты</span>
+                        <a class="footer__link" href="{{ route('contacts.index') }}">
+                            Контакты
+                        </a>
                     </li>
                 </ul>
             </div>

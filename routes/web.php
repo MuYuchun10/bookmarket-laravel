@@ -9,6 +9,7 @@ use App\Http\Controllers\ProfileController;
 use App\Http\Controllers\CheckoutController;
 use App\Http\Controllers\AdminController;
 use App\Http\Controllers\AdminProductController;
+use App\Http\Controllers\ContactController;
 
 Route::get('/', [HomeController::class, 'index'])->name('home');
 
@@ -74,3 +75,11 @@ Route::prefix('admin')
 
 Route::post('/buy-now/{product}', [CheckoutController::class, 'buyNow'])
     ->name('checkout.buy-now');
+
+Route::get('/contacts', [ContactController::class, 'index'])
+    ->name('contacts.index');
+
+Route::post('/contacts', [ContactController::class, 'store'])
+    ->middleware('throttle:5,1')
+    ->name('contacts.store');
+    

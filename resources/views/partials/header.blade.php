@@ -21,7 +21,10 @@
                            href="{{ route('catalog.index') }}">Каталог</a>
                     </li>
                     <li class="nav__item">
-                        <span class="nav__link">Контакты</span>
+                        <a class="nav__link {{ request()->routeIs('contacts.*') ? 'nav__link--active' : '' }}"
+                        href="{{ route('contacts.index') }}">
+                            Контакты
+                        </a>
                     </li>
                     @auth
                         @if(auth()->user()->role === 'admin')
