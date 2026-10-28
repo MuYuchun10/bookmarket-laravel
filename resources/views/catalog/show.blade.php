@@ -135,4 +135,45 @@
         </div>
     </div>
 </section>
+
+
+<!-- Похожие книги -->
+@if($relatedProducts->isNotEmpty())
+<section class="featured" style="margin-top: 48px;">
+    <div class="container">
+        <div class="section-header">
+            <h2 class="section-title">Похожие книги</h2>
+        </div>
+
+        <div class="products-grid">
+            @foreach($relatedProducts as $book)
+                @include('partials.product-card', ['book' => $book])
+            @endforeach
+        </div>
+    </div>
+</section>
+@endif
+
+<!-- Отзывы -->
+<section class="featured">
+    <div class="container">
+        <h2 class="section-title">
+            Отзывы покупателей ({{ $product->reviews->count() }})
+        </h2>
+
+        <div class="book-specs">
+            @forelse($product->reviews as $review)
+                <article class="book-spec">
+                    <h3>{{ $review->user?->name ?? 'Покупатель' }}</h3>
+
+                    <p>Оценка: {{ $review->rating }} / 5 ★</p>
+
+                    <p>{{ $review->comment }}</p>
+                </article>
+            @empty
+                <p>У этой книги пока нет отзывов.</p>
+            @endforelse
+        </div>
+    </div>
+</section>
 @endsection

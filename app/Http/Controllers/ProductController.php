@@ -73,12 +73,18 @@ class ProductController extends Controller
      */
     public function show(string $slug)
     {
-        $product = Product::with(['category', 'reviews.user'])
+        $product = Product::active()
+            ->with([
+                'category',
+                'reviews' => fn ($query) =>
+                    $query->where('status', true)->with('user'),
+            ])
             ->where('slug', $slug)
             ->firstOrFail();
 
         // 4 похожие книги из той же категории
         $relatedProducts = Product::active()
+            ->with('category')
             ->where('category_id', $product->category_id)
             ->where('id', '!=', $product->id)
             ->take(4)
