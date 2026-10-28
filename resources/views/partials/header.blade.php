@@ -28,9 +28,9 @@
 
             <div class="user-nav">
                 @auth
-                    <span class="user-nav__link">
+                    <a class="user-nav__link" href="{{ route('profile.index') }}">
                         {{ auth()->user()->name }}
-                    </span>
+                    </a>
 
                     <form action="{{ route('logout') }}" method="POST">
                         @csrf
