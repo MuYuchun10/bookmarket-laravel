@@ -98,9 +98,16 @@
                 </div>
 
                 <!-- Корзину подключим позже -->
-                <div class="book-card__actions">
-                    <form action="{{ route('cart.add', $product->id) }}"
-                        method="POST">
+                <div class="book-card__actions">   
+                    <form class="js-cart-add"
+                        action="{{ route('cart.add', $product->id) }}"
+                        method="POST"
+                        data-id="{{ $product->id }}"
+                        data-qty="{{ session('cart', [])[$product->id] ?? 0 }}"
+                        data-stock="{{ $product->quantity }}"
+                        data-title="{{ $product->name }}"
+                        data-update-url="{{ route('cart.update', $product->id) }}"
+                        data-cart-url="{{ route('cart.index') }}">
                         @csrf
 
                         <button class="btn btn--primary"
@@ -109,6 +116,7 @@
                             Добавить в корзину
                         </button>
                     </form>
+
 
                     <form action="{{ route('checkout.buy-now', $product->id) }}"
                         method="POST">

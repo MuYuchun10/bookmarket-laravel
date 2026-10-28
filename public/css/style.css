@@ -3359,3 +3359,17 @@ body.modal-open {
         height: 360px;
     }
 }
+
+.js-cart-add[hidden] {
+    display: none !important;
+}
+
+.js-cart-add {
+    width: 100%;
+}
+
+.add-to-cart-counter__btn:disabled {
+    opacity: 0.4;
+    cursor: not-allowed;
+    transform: none;
+}

@@ -62,7 +62,7 @@
     </div>
 
     <script src="{{ asset('js/quick-view.js') }}" defer></script>
-
+    <script src="{{ asset('js/cart-controls.js') }}" defer></script>
 
     @stack('scripts')
 </body>

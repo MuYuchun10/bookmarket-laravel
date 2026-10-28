@@ -35,8 +35,15 @@
         </div>
 
         <div class="product-card__actions">
-            <form action="{{ route('cart.add', $book->id) }}"
-                method="POST">
+            <form class="js-cart-add"
+                action="{{ route('cart.add', $book->id) }}"
+                method="POST"
+                data-id="{{ $book->id }}"
+                data-qty="{{ session('cart', [])[$book->id] ?? 0 }}"
+                data-stock="{{ $book->quantity }}"
+                data-title="{{ $book->name }}"
+                data-update-url="{{ route('cart.update', $book->id) }}"
+                data-cart-url="{{ route('cart.index') }}">
                 @csrf
 
                 <button class="product-card__btn"
@@ -45,6 +52,7 @@
                     Добавить в корзину
                 </button>
             </form>
+
 
             <button class="product-card__quick-btn open-modal"
                     type="button">
