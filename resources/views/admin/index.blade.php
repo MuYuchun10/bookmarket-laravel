@@ -10,18 +10,7 @@
 @section('content')
 <section class="admin-page">
     <div class="container">
-
-        <nav class="admin-nav">
-            <a class="admin-nav__link admin-nav__link--active"
-               href="{{ route('admin.index') }}">
-                Обзор
-            </a>
-
-            <span class="admin-nav__link">Книги</span>
-            <span class="admin-nav__link">Категории</span>
-            <span class="admin-nav__link">Заказы</span>
-            <span class="admin-nav__link">Пользователи</span>
-        </nav>
+        @include('admin.partials.nav')
 
         <!-- Статистика -->
         <section class="admin-dashboard">

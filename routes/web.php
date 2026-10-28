@@ -8,6 +8,7 @@ use App\Http\Controllers\AuthController;
 use App\Http\Controllers\ProfileController;
 use App\Http\Controllers\CheckoutController;
 use App\Http\Controllers\AdminController;
+use App\Http\Controllers\AdminProductController;
 
 Route::get('/', [HomeController::class, 'index'])->name('home');
 
@@ -63,4 +64,7 @@ Route::prefix('admin')
     ->group(function () {
         Route::get('/', [AdminController::class, 'index'])
             ->name('index');
+
+        Route::get('/products', [AdminProductController::class, 'index'])
+            ->name('products.index');
     });
