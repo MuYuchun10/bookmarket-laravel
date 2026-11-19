@@ -26,6 +26,14 @@
                             Контакты
                         </a>
                     </li>
+
+                    <li class="nav__item">
+                        <a class="nav__link {{ request()->routeIs('chat.*') ? 'nav__link--active' : '' }}"
+                        href="{{ route('chat.index') }}">
+                            Чат поддержки
+                        </a>
+                    </li>
+
                     @auth
                         @if(auth()->user()->role === 'admin')
                             <li class="nav__item">
