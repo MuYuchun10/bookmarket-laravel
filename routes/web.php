@@ -83,3 +83,6 @@ Route::post('/contacts', [ContactController::class, 'store'])
     ->middleware('throttle:5,1')
     ->name('contacts.store');
     
+
+Route::view('/support-chat', 'chat.index')
+    ->name('chat.index');
