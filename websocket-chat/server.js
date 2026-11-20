@@ -8,6 +8,9 @@ const wss = new WebSocket.Server({ port: PORT });
 // Подключённые участники: WebSocket -> имя
 const clients = new Map();
 
+const messageHistory = [];
+const MAX_HISTORY = 50;
+
 // Отправка одному клиенту
 function sendToClient(ws, data) {
     if (ws.readyState === WebSocket.OPEN) {
@@ -52,7 +55,7 @@ wss.on('connection', (ws) => {
             Array.isArray(parsed)) {
             return;
         }
-        
+
         const { type } = parsed;
 
         // Вход пользователя
@@ -71,7 +74,11 @@ wss.on('connection', (ws) => {
                 type: 'joined',
                 clientId
             });
-
+            
+            for (const chatMessage of messageHistory) {
+                sendToClient(ws, chatMessage);
+            }
+            
             systemMessage(`Пользователь ${name} вошёл в чат`);
 
             sendToClient(ws, {
@@ -93,14 +100,22 @@ wss.on('connection', (ws) => {
             const message = parsed.message.trim();
             if (!message || message.length > 2000) return;
 
-            broadcast({
+            const chatMessage = {
                 type: 'message',
                 sender: name,
                 senderId: clientId,
                 message,
                 timestamp: new Date().toLocaleTimeString(),
                 id: uuidv4()
-            });
+            };
+
+            messageHistory.push(chatMessage);
+
+            if (messageHistory.length > MAX_HISTORY) {
+                messageHistory.shift();
+            }
+
+            broadcast(chatMessage);
         }
 
         // Индикатор набора текста
