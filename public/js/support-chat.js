@@ -12,6 +12,7 @@ document.addEventListener('DOMContentLoaded', () => {
 
     let socket = null;
     let userName = '';
+    let myId = null;
     let typingTimeout = null;
 
     const typingUsers = new Map();
@@ -126,11 +127,15 @@ document.addEventListener('DOMContentLoaded', () => {
                 return;
             }
 
+            if (data.type === 'joined') {
+                myId = data.clientId;
+            }
+
             if (data.type === 'message') {
                 addMessage(
                     data.sender,
                     data.message,
-                    data.sender === userName ? 'self' : 'other',
+                    data.senderId === myId ? 'self' : 'other',
                     data.timestamp
                 );
 

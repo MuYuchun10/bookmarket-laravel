@@ -35,6 +35,7 @@ function systemMessage(message) {
 }
 
 wss.on('connection', (ws) => {
+    const clientId = uuidv4();
     console.log('Новое подключение');
 
     ws.on('message', (data) => {
@@ -60,6 +61,11 @@ wss.on('connection', (ws) => {
 
             clients.set(ws, name);
 
+            sendToClient(ws, {
+                type: 'joined',
+                clientId
+            });
+
             systemMessage(`Пользователь ${name} вошёл в чат`);
 
             sendToClient(ws, {
@@ -84,6 +90,7 @@ wss.on('connection', (ws) => {
             broadcast({
                 type: 'message',
                 sender: name,
+                senderId: clientId,
                 message,
                 timestamp: new Date().toLocaleTimeString(),
                 id: uuidv4()
