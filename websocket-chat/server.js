@@ -101,7 +101,7 @@ wss.on('connection', (ws) => {
     });
 
     // Выход пользователя
-    ws.on('close', () => {
+    ws.on('close', (code, reason) => {
         const name = clients.get(ws);
 
         if (name) {
@@ -109,7 +109,7 @@ wss.on('connection', (ws) => {
             systemMessage(`Пользователь ${name} покинул чат`);
         }
 
-        console.log('Клиент отключился');
+        console.log(`Клиент отключился. Код: ${code}, причина: ${reason.toString()}`);
     });
 });
 
