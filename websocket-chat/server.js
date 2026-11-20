@@ -46,7 +46,13 @@ wss.on('connection', (ws) => {
         } catch {
             return;
         }
-
+        
+        if (parsed === null ||
+            typeof parsed !== 'object' ||
+            Array.isArray(parsed)) {
+            return;
+        }
+        
         const { type } = parsed;
 
         // Вход пользователя
