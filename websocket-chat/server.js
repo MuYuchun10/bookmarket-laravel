@@ -101,6 +101,7 @@ wss.on('connection', (ws) => {
         if (type === 'typing') {
             broadcast({
                 type: 'typing',
+                clientId,
                 name,
                 isTyping: parsed.isTyping === true
             }, ws);

@@ -45,7 +45,7 @@ document.addEventListener('DOMContentLoaded', () => {
 
     // Отображение печатающих пользователей
     function renderTyping() {
-        const names = [...typingUsers.keys()];
+        const names = [...typingUsers.values()].map(user => user.name);
 
         if (names.length === 0) {
             typingIndicator.textContent = '';
@@ -57,21 +57,21 @@ document.addEventListener('DOMContentLoaded', () => {
         }
     }
 
-    function handleTyping(name, isTyping) {
-        if (!name || name === userName) return;
+    function handleTyping(clientId, name, isTyping) {
+        if (!clientId || clientId === myId) return;
 
-        if (typingUsers.has(name)) {
-            clearTimeout(typingUsers.get(name));
-            typingUsers.delete(name);
+        if (typingUsers.has(clientId)) {
+            clearTimeout(typingUsers.get(clientId).timer);
+            typingUsers.delete(clientId);
         }
 
         if (isTyping) {
             const timer = setTimeout(() => {
-                typingUsers.delete(name);
+                typingUsers.delete(clientId);
                 renderTyping();
             }, 2500);
 
-            typingUsers.set(name, timer);
+            typingUsers.set(clientId, { name, timer });
         }
 
         renderTyping();
@@ -139,7 +139,7 @@ document.addEventListener('DOMContentLoaded', () => {
                     data.timestamp
                 );
 
-                handleTyping(data.sender, false);
+                handleTyping(data.senderId, data.sender, false);
             }
 
             if (data.type === 'system') {
@@ -147,7 +147,7 @@ document.addEventListener('DOMContentLoaded', () => {
             }
 
             if (data.type === 'typing') {
-                handleTyping(data.name, data.isTyping);
+                handleTyping(data.clientId, data.name, data.isTyping);
             }
         };
 
@@ -168,8 +168,8 @@ document.addEventListener('DOMContentLoaded', () => {
             clearTimeout(typingTimeout);
             typingIndicator.textContent = '';
 
-            for (const timer of typingUsers.values()) {
-                clearTimeout(timer);
+            for (const user of typingUsers.values()) {
+                clearTimeout(user.timer);
             }
             typingUsers.clear();
         };
